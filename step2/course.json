@@ -1,0 +1,963 @@
+{
+  "schema_version": 1,
+  "framework": "ESP-IDF",
+  "idf_version": "v5.5.1",
+  "target": "esp32",
+  "board": "ESP32-DevKitC V4 / ESP32-WROOM (verify actual board)",
+  "validation": "See step2/VALIDATION.md; hardware requires learner evidence",
+  "lessons": [
+    {
+      "id": "H00",
+      "title": "把第一份固件送进 ESP32",
+      "notebook": "step2/notebooks/H00-setup.ipynb",
+      "prerequisites": "STEP 1 可选完成；准备板和数据线。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "认出手中的板",
+          "examples": []
+        },
+        {
+          "id": "install",
+          "mode": "Guided",
+          "title": "配置 VS Code 与 ESP-IDF",
+          "examples": []
+        },
+        {
+          "id": "project",
+          "mode": "Guided",
+          "title": "打开引导工程",
+          "examples": []
+        },
+        {
+          "id": "build",
+          "mode": "Guided",
+          "title": "构建和烧录",
+          "examples": []
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "让固件证明它是新的",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "三个失败属于哪一层",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "写一张设备身份证",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "最小故障树",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "build 完成且记录 IDF/target",
+        "实际串口 flash 完成",
+        "Reset 后出现当前应用标识"
+      ]
+    },
+    {
+      "id": "H01",
+      "title": "把虚拟按钮换成真实 GPIO",
+      "notebook": "step2/notebooks/H01-gpio.ipynb",
+      "prerequisites": "H00 的构建、烧录和启动日志通过；LED、电阻、按钮、面包板。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "断电接线并解释回路",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "读原始电平，再驱动灯",
+          "examples": [
+            {
+              "source": "step2/lessons/H01/examples/gpio_led.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "更换观察方法",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "按钮反了还是浮空了",
+          "examples": []
+        },
+        {
+          "id": "framework",
+          "mode": "Guided",
+          "title": "同一行为，两种入口",
+          "examples": [
+            {
+              "source": "step2/lessons/H01/examples/board.hpp",
+              "target": "main/board.hpp"
+            },
+            {
+              "source": "step2/lessons/H01/examples/esp32_board.hpp",
+              "target": "main/esp32_board.hpp"
+            },
+            {
+              "source": "step2/lessons/H01/examples/hal_entry.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "迁移软件契约",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "设计一颗状态灯",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "断电核对 GPIO18/19、3.3 V、GND、LED 电阻和极性",
+        "raw 松开为 1、按下为 0，日志与实物分别记录",
+        "HAL 中保留极性，上层不直接调用 GPIO API"
+      ]
+    },
+    {
+      "id": "H02",
+      "title": "亲手建立可持续成长的工程",
+      "notebook": "step2/notebooks/H02-project.ipynb",
+      "prerequisites": "H00–H01；空目录、Git。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "检查起点与工程地图",
+          "examples": []
+        },
+        {
+          "id": "create",
+          "mode": "Guided",
+          "title": "从最小骨架开始",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "让源文件参与构建",
+          "examples": [
+            {
+              "source": "step2/lessons/H02/examples/device_name.hpp",
+              "target": "main/device_name.hpp"
+            },
+            {
+              "source": "step2/lessons/H02/examples/device_name.cpp",
+              "target": "main/device_name.cpp"
+            },
+            {
+              "source": "step2/lessons/H02/examples/main.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "把模块换成自己的",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "制造一次链接错误",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "把按钮行为带进来",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "保存第一份可恢复起点",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "能够解释入口、两层 CMake、声明/实现/链接",
+        "自己添加 .cpp 并修复漏登记错误",
+        "官方命令能构建烧录，自己的按钮行为在新工程运行"
+      ]
+    },
+    {
+      "id": "H03",
+      "title": "计时的时候，按钮还要响应",
+      "notebook": "step2/notebooks/H03-timing.ipynb",
+      "prerequisites": "H02 持续工程，STEP 1 时间/消抖测试。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "保留原有按钮与灯",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "Timer 只送通知",
+          "examples": [
+            {
+              "source": "step2/lessons/H03/examples/timer_event.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "测量响应而不是猜",
+          "examples": []
+        },
+        {
+          "id": "interrupt",
+          "mode": "Guided",
+          "title": "边沿发生后谁来处理",
+          "examples": [
+            {
+              "source": "step2/lessons/H03/examples/interrupt.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "把两秒误写成两毫秒",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "稳定按键 + 可取消计时",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "选择最小机制",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "计时期间能取消且有实际响应记录",
+        "抖动与单次事件分别验收",
+        "Timer task / ISR 的 API 和职责区分清楚"
+      ]
+    },
+    {
+      "id": "H04",
+      "title": "让旋钮改变亮度，但别把数字当电压",
+      "notebook": "step2/notebooks/H04-measurement.ipynb",
+      "prerequisites": "H03；10 kΩ 电位器，万用表可选。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "把电位器限制在量程内",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "真实 PWM 与 ADC",
+          "examples": [
+            {
+              "source": "step2/lessons/H04/examples/pwm_adc.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "分开采样与显示",
+          "examples": []
+        },
+        {
+          "id": "calibrate",
+          "mode": "Build",
+          "title": "把 raw 变成有依据的 mV",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "忘记提交 duty",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "自动亮度设置",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "让灯对人有用",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "PWM 亮度变化有实物记录",
+        "ADC raw 与实测电压/校准可用性分别记录",
+        "噪声/响应延迟与输入错误有测试"
+      ]
+    },
+    {
+      "id": "H05",
+      "title": "给工具接上外部设备",
+      "notebook": "step2/notebooks/H05-buses.ipynb",
+      "prerequisites": "H04；UART/SPI 只需跳线，BH1750 为 I2C 实验所需。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "分开实验并核对电平",
+          "examples": []
+        },
+        {
+          "id": "uart",
+          "mode": "Guided",
+          "title": "一块数据不等于一帧",
+          "examples": [
+            {
+              "source": "step2/lessons/H05/examples/uart_loopback.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "i2c",
+          "mode": "Guided",
+          "title": "传感器会不回答",
+          "examples": [
+            {
+              "source": "step2/lessons/H05/examples/i2c_light.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "spi",
+          "mode": "Guided",
+          "title": "观察一笔同步事务",
+          "examples": [
+            {
+              "source": "step2/lessons/H05/examples/spi_loopback.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "换一种输入节奏",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "长度与地址",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "一个有边界的驱动",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "选择你真正需要的外设",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "UART 断线超时、半帧和粘帧有证据",
+        "I2C 地址/转换时间/错误与有效数据分开",
+        "SPI 回环与显示器功能分开验收"
+      ]
+    },
+    {
+      "id": "H06",
+      "title": "让工程结构反映职责",
+      "notebook": "step2/notebooks/H06-components.ipynb",
+      "prerequisites": "H05 持续工程和可恢复版本。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "先画依赖再移动文件",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "创建一个小 Component",
+          "examples": [
+            {
+              "source": "step2/lessons/H06/examples/status_policy.hpp",
+              "target": "components/status_policy/include/status_policy.hpp"
+            },
+            {
+              "source": "step2/lessons/H06/examples/status_policy.cpp",
+              "target": "components/status_policy/status_policy.cpp"
+            },
+            {
+              "source": "step2/lessons/H06/examples/main.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "config",
+          "mode": "Modify",
+          "title": "配置不是散落的常量",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "三种错误分层定位",
+          "examples": []
+        },
+        {
+          "id": "host",
+          "mode": "Build",
+          "title": "复用上层测试",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "整理持续工程",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "给未来的自己交接",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "新增 Component 与依赖登记可构建",
+        "host 测试实际运行且能抓住一次人为回归",
+        "GPIO/协议/业务的所有权与依赖可解释"
+      ]
+    },
+    {
+      "id": "H07",
+      "title": "让电脑找到这台工具",
+      "notebook": "step2/notebooks/H07-wifi.ipynb",
+      "prerequisites": "H06；可控制的 2.4 GHz AP。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "先排除网络拓扑",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "事件驱动连接",
+          "examples": [
+            {
+              "source": "step2/lessons/H07/examples/wifi_link.hpp",
+              "target": "main/wifi_link.hpp"
+            },
+            {
+              "source": "step2/lessons/H07/examples/wifi_link.cpp",
+              "target": "main/wifi_link.cpp"
+            },
+            {
+              "source": "step2/lessons/H07/examples/main.cpp",
+              "target": "main/main.cpp"
+            }
+          ],
+          "configuration_sources": [
+            {
+              "source": "step2/lessons/H07/examples/Kconfig.projbuild",
+              "target": "main/Kconfig.projbuild"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "切断 AP 再恢复",
+          "examples": []
+        },
+        {
+          "id": "dns",
+          "mode": "Build",
+          "title": "名字与地址",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "不要在事件回调睡觉",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "网络状态接入业务",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "网络诊断工具雏形",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "实际关联、IP 与应用可达分别记录",
+        "断 AP 后本地功能仍在，恢复有日志",
+        "凭据未进入 Git/日志，DNS 错误单独报告"
+      ]
+    },
+    {
+      "id": "H08",
+      "title": "浏览器查看真实设备状态",
+      "notebook": "step2/notebooks/H08-http.ipynb",
+      "prerequisites": "H07 实际网络通；电脑 curl/浏览器。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "在现有网络模块上加服务",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "启动 HTTP API",
+          "examples": [
+            {
+              "source": "step2/lessons/H08/examples/http_status.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "状态来自 Controller",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "URL、类型与超时",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "安全的局域网控制",
+          "examples": []
+        },
+        {
+          "id": "udp",
+          "mode": "Build",
+          "title": "不用记 IP 的发现请求",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "做一页真正有用的面板",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "电脑 GET 获取变化的真实设备状态",
+        "错误 POST 不改变设备状态，响应有明确错误",
+        "断网/恢复与实物操作可交叉核对"
+      ]
+    },
+    {
+      "id": "H09",
+      "title": "选择实时推送，而不同时堆所有协议",
+      "notebook": "step2/notebooks/H09-realtime.ipynb",
+      "prerequisites": "H08；WebSocket 浏览器，MQTT 可选本地 Mosquitto。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "先定义消息语义",
+          "examples": []
+        },
+        {
+          "id": "websocket",
+          "mode": "Guided",
+          "title": "先完成握手和一条消息",
+          "examples": [
+            {
+              "source": "step2/lessons/H09/examples/websocket.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "mqtt",
+          "mode": "Guided",
+          "title": "通过 Broker 连接另一端",
+          "examples": [
+            {
+              "source": "step2/lessons/H09/examples/mqtt.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "状态与事件分开",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "旧状态不是新动作",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "完成一种实时通道",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "解释选择",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "至少一种实时通道完成真实电脑↔设备往返",
+        "重连与订阅/会话恢复有故障记录",
+        "retain、重复与分片语义有测试"
+      ]
+    },
+    {
+      "id": "H10",
+      "title": "并发是否真的解决你的问题",
+      "notebook": "step2/notebooks/H10-rtos.ipynb",
+      "prerequisites": "H09 主线功能及性能记录。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "先测单循环",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "一个 Producer，一个 Owner",
+          "examples": [
+            {
+              "source": "step2/lessons/H10/examples/queue.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "队列满的行为必须可见",
+          "examples": []
+        },
+        {
+          "id": "sync",
+          "mode": "Build",
+          "title": "选择同步工具",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "资源顺序造成卡死",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "证明忙的时候仍能取消",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "删掉一个不必要的 Task",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "队列满/创建失败有处理，消息无生命周期漏洞",
+        "真实负载下按钮响应预算有测量",
+        "能解释为何使用或不使用多 Task"
+      ]
+    },
+    {
+      "id": "H11",
+      "title": "重启之后还记得设置",
+      "notebook": "step2/notebooks/H11-storage.ipynb",
+      "prerequisites": "H10；已记录配置和 Flash 数据。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "定义配置契约",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "先验证 commit 和重启",
+          "examples": [
+            {
+              "source": "step2/lessons/H11/examples/nvs_config.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "少一次 commit 会怎样",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "类型变化与缺字段",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "版本迁移与恢复",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "一张配置故障表",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "commit 后重启保留，未 commit 情况有记录",
+        "无效配置不会破坏旧值，未来 schema 有策略",
+        "出厂恢复范围与写失败恢复明确"
+      ]
+    },
+    {
+      "id": "H12",
+      "title": "没有电脑也能配置网络",
+      "notebook": "step2/notebooks/H12-ble.ipynb",
+      "prerequisites": "H11；支持 BLE 的板，手机与官方 app。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "核对无线能力与客户端",
+          "examples": []
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "真实 BLE 配网",
+          "examples": [
+            {
+              "source": "step2/lessons/H12/examples/ble_provision.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "observe",
+          "mode": "Modify",
+          "title": "看见广播不等于配好网",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "有广告却没有授权",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "有边界的配置入口",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "交给另一位使用者",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "真实手机发现、会话、凭据接受、IP/API 分层记录",
+        "错误 PoP/密码不会被当成配网成功",
+        "重新配网入口、超时与凭据日志边界明确"
+      ]
+    },
+    {
+      "id": "H13",
+      "title": "更新失败，设备还能回来",
+      "notebook": "step2/notebooks/H13-ota.ipynb",
+      "prerequisites": "H11/H12；可恢复的 4 MB+ 板、可信 HTTPS 固件服务。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "先备份和检查 Flash 空间",
+          "examples": []
+        },
+        {
+          "id": "partitions",
+          "mode": "Guided",
+          "title": "给两个候选槽留空间",
+          "examples": [],
+          "configuration_sources": [
+            {
+              "source": "step2/lessons/H13/examples/partitions.csv",
+              "target": "partitions.csv"
+            }
+          ]
+        },
+        {
+          "id": "guided",
+          "mode": "Guided",
+          "title": "HTTPS 拉取候选固件",
+          "examples": [
+            {
+              "source": "step2/lessons/H13/examples/ota.cpp",
+              "target": "main/main.cpp"
+            }
+          ]
+        },
+        {
+          "id": "modify",
+          "mode": "Modify",
+          "title": "健康不是启动一行日志",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "故意让候选不通过自检",
+          "examples": []
+        },
+        {
+          "id": "build-own",
+          "mode": "Build",
+          "title": "有边界的更新状态机",
+          "examples": []
+        },
+        {
+          "id": "open",
+          "mode": "Open",
+          "title": "交付更新手册",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "真实分区与 bin 大小核对，串口救援可用",
+        "真实候选更新、启动确认与失败回滚分别记录",
+        "TLS/完整性/签名边界、配置兼容和下载失败明确"
+      ]
+    },
+    {
+      "id": "H14",
+      "title": "把工具变成自己的项目",
+      "notebook": "step2/notebooks/H14-capstone.ipynb",
+      "prerequisites": "H02–H13 中与你项目适用的单元。",
+      "steps": [
+        {
+          "id": "preflight",
+          "mode": "Guided",
+          "title": "选择明确的小需求",
+          "examples": []
+        },
+        {
+          "id": "design",
+          "mode": "Build",
+          "title": "先定义可验收的系统",
+          "examples": []
+        },
+        {
+          "id": "implement",
+          "mode": "Build",
+          "title": "在持续工程完成主线",
+          "examples": []
+        },
+        {
+          "id": "debug",
+          "mode": "Debug",
+          "title": "设计一次真实故障演练",
+          "examples": []
+        },
+        {
+          "id": "reproduce",
+          "mode": "Build",
+          "title": "关闭老师，按自己的 README 做",
+          "examples": []
+        },
+        {
+          "id": "review",
+          "mode": "Open",
+          "title": "交接和下一步",
+          "examples": []
+        }
+      ],
+      "checks": [
+        "实际满足三项核心用户需求",
+        "干净目录按自己的 README 构建、烧录和使用",
+        "有真实故障记录、恢复路径与明确未验证事项"
+      ]
+    }
+  ]
+}

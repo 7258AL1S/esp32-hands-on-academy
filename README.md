@@ -16,7 +16,7 @@
 
 第二阶段（STEP 2）再把同一套 Controller、状态机、协议和测试迁移到 GPIO、Timer、Interrupt、Wi-Fi、FreeRTOS、BLE 和 OTA。电脑模拟器不会冒充真实硬件验证：电气参数、无线射频、芯片时序、Flash 分区和真实 FreeRTOS 调度仍要在硬件上检查。
 
-**当前状态：STEP 1 的 25 个主课与 24 个答案 Notebook 已提供；STEP 2 为迁移规划，尚未完成真实硬件课程。** 本机 macOS 已完成 Notebook 和行为测试；Linux、WSL 与原生 Windows 尚未实机验收。
+**当前状态：STEP 1 提供 25 个主课与 24 个答案 Notebook；STEP 2 提供 H00–H14 的硬件课程 Alpha、最小 ESP-IDF 工程和 Codex 侧边栏授课约定。** STEP 2 的 Notebook 与固件构建检查见 [验证记录](step2/VALIDATION.md)，真实开发板与完整 agent 授课体验仍待验收。Linux、WSL 与原生 Windows 尚未实机验收。
 
 ## 开始前：电脑要求
 
@@ -422,15 +422,20 @@ ESP32 GPIO / Timer / Driver
 - [ESP32-DevKitC 官方指南](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html)
 - [经典 ESP32 数据手册](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
 
-STEP 2 将独立开发作为必修线：**H02 自己新建工程 → H06 组件、配置和调试 → H14 在教程之外完成项目**。前期保留 Notebook 的操作与观察体验，后期用正常 `.cpp` / `.hpp` 工程和官方工具独立构建、烧录与调试。详细安排见 [STEP2_PLAN.md](STEP2_PLAN.md)。
+STEP 2 的入口是 [硬件课程 README](step2/README.md)：先按 [安装指南](step2/SETUP.md) 安装 ESP-IDF 扩展和 v5.5.1 工具链，再打开 [H00 Notebook](step2/notebooks/H00-setup.ipynb)。每课开头的 prompt 发给 Codex 侧边栏，它读取课程并逐步引导；也可手工顺序学习。
 
-工程主线采用 ESP-IDF，Arduino 用作对照和可选路线；选择依据是项目需求与维护方式，不把“更专业”当作唯一标准。目前 STEP 2 仍为规划。
+**H00–H01 引导工程 → H02 自己建一次工程 → H03–H14 在同一工程持续扩展**。工程包含 `AGENTS.md` 与进度记录；示例可以合并，挑战先自己尝试。H02/H06 专门讲入口、CMake、组件、HAL、配置与调试，H14 将同一工程放到干净目录，关闭 Notebook/agent，按自己的 README 复现。详见 [STEP2_PLAN.md](STEP2_PLAN.md) 与 [教学机制](step2/TEACHING.md)。
+
+工程主线采用 ESP-IDF，Arduino 用作对照和可选路线；选择依据是项目需求与维护方式，不把“更专业”当作唯一标准。当前硬件课程为 Alpha；构建通过不等于 GPIO、Wi-Fi、BLE 或 OTA 已实机通过。
 
 ## 项目结构
 
 ```text
 notebooks/                       主课程 Notebook
-notebooks/solutions/             独立参考答案
+notebooks/solutions/             STEP 1 独立参考答案
+step2/notebooks/                 H00–H14 硬件课与 agent 启动 prompt
+step2/device-template/           持续 ESP-IDF 工程的最小骨架与 AGENTS.md
+step2/SETUP.md                   硬件开发环境安装与串口指引
 lessons/<lesson>/                README、starter、challenge、solution、tests、hints
 include/academy/                 Board、Device、网络和系统抽象
 simulator/                       Virtual GPIO / Device host runtime

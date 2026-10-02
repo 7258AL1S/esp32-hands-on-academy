@@ -1,0 +1,9 @@
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+.vscode/settings.json
+.academy/course.json
+.academy/evidence/
+*.pem
+.env

@@ -47,8 +47,20 @@ STYLE = '''<style>
   background: #164567; color: #e4f3ff; border-color: #8cc8ff;
 }
 .academy-panel .jupyter-button:disabled { opacity: .65; }
-.academy-panel select, .academy-panel input {
+.academy-panel select, .academy-panel input, .academy-panel textarea {
   background: #141414; color: #eeeeee; border-color: #798491;
+}
+.academy-panel .widget-checkbox label {
+  color: #eeeeee; white-space: normal; overflow-wrap: anywhere;
+  height: auto; min-height: 28px; line-height: 1.6;
+}
+.academy-panel textarea {
+  box-sizing: border-box; max-width: 100%; padding: 8px;
+  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.academy-panel textarea::placeholder { color: #b8c2cc; opacity: 1; }
+.academy-panel textarea:focus-visible {
+  outline: 2px solid #8cc8ff; outline-offset: 2px;
 }
 .academy-panel .widget-dropdown { height: auto; min-height: 40px; align-items: center; }
 .academy-panel .widget-dropdown select {

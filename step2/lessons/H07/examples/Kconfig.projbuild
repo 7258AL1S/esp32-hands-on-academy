@@ -1,0 +1,14 @@
+menu "Academy local network"
+    config ACADEMY_WIFI_SSID
+        string "Wi-Fi SSID (local secret)"
+        default ""
+    config ACADEMY_WIFI_PASSWORD
+        string "Wi-Fi password (local secret)"
+        default ""
+    config ACADEMY_MQTT_URI
+        string "MQTT broker URI (private LAN only for mqtt://)"
+        default "mqtt://192.168.1.2:1883"
+    config ACADEMY_OTA_URL
+        string "HTTPS firmware URL"
+        default "https://example.invalid/firmware.bin"
+endmenu
