@@ -1,0 +1,7 @@
+{
+  "lesson": 16,
+  "kind": "dns",
+  "solution_must_pass": true,
+  "starter_must_fail": true,
+  "challenge_must_fail": true
+}

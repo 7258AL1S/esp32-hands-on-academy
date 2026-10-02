@@ -1,0 +1,37 @@
+{
+  "title": "Lesson 05 — 用固定资源处理连续数据",
+  "kind": "memory",
+  "step_ms": 10,
+  "scenarios": {
+    "guided": [
+      {
+        "title": "第一个输入",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {
+              "state": "idle"
+            }
+          }
+        ]
+      }
+    ],
+    "exercise": [
+      {
+        "title": "边界行为",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {}
+          }
+        ]
+      }
+    ]
+  }
+}

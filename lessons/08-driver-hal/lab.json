@@ -1,0 +1,37 @@
+{
+  "title": "Lesson 08 — 把传感器细节留在 Driver 层",
+  "kind": "sensor",
+  "step_ms": 10,
+  "scenarios": {
+    "guided": [
+      {
+        "title": "第一个输入",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {
+              "state": "idle"
+            }
+          }
+        ]
+      }
+    ],
+    "exercise": [
+      {
+        "title": "边界行为",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {}
+          }
+        ]
+      }
+    ]
+  }
+}

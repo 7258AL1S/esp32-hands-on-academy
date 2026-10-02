@@ -1,0 +1,37 @@
+{
+  "title": "Lesson 09 — 短脉冲来了，Polling 会漏掉吗？",
+  "kind": "interrupt",
+  "step_ms": 10,
+  "scenarios": {
+    "guided": [
+      {
+        "title": "第一个输入",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {
+              "state": "idle"
+            }
+          }
+        ]
+      }
+    ],
+    "exercise": [
+      {
+        "title": "边界行为",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false
+            },
+            "expect": {}
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+  "files.exclude": {"**/.build": true},
+  "search.exclude": {"**/.venv": true, "**/.build": true}
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Lesson 25 — 独立项目验收台",
+  "kind": "config",
+  "step_ms": 10,
+  "scenarios": {
+    "guided": [
+      {
+        "title": "最小契约",
+        "steps": [
+          {
+            "input": {"now_ms": 0, "button": false, "connected": true, "fault": false},
+            "expect": {"state": "idle"}
+          }
+        ]
+      }
+    ],
+    "exercise": [
+      {
+        "title": "项目起点",
+        "steps": [
+          {
+            "input": {"now_ms": 0, "button": false, "connected": true, "fault": false},
+            "expect": {}
+          }
+        ]
+      }
+    ]
+  }
+}

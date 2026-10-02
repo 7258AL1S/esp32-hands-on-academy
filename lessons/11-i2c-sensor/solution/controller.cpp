@@ -1,0 +1,3 @@
+#include "controller.hpp"
+#include <string>
+namespace academy {Controller::Controller(Device&b):board_(b){}void Controller::tick(){board_.output.error=false;if(!board_.input.connected||board_.input.fault){board_.output.error=true;board_.output.outgoing="TIMEOUT\n";board_.output.state="i2c error";return;}if(board_.input.text=="I2C:0x48:READ"){board_.output.reading=board_.input.temperature;board_.output.outgoing="ACK:"+std::to_string(board_.output.reading)+"\n";board_.output.state="i2c ok";}else if(!board_.input.text.empty()){board_.output.error=true;board_.output.outgoing="NACK\n";board_.output.state="i2c error";}}}

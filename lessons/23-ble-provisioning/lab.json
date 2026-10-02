@@ -1,0 +1,39 @@
+{
+  "title": "Lesson 23 — BLE 配置模型",
+  "kind": "ble",
+  "step_ms": 10,
+  "scenarios": {
+    "guided": [
+      {
+        "title": "初始输入",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false,
+              "connected": true,
+              "fault": false
+            },
+            "expect": {}
+          }
+        ]
+      }
+    ],
+    "exercise": [
+      {
+        "title": "边界输入",
+        "steps": [
+          {
+            "input": {
+              "now_ms": 0,
+              "button": false,
+              "connected": true,
+              "fault": false
+            },
+            "expect": {}
+          }
+        ]
+      }
+    ]
+  }
+}
