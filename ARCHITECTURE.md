@@ -26,12 +26,16 @@ VirtualBoard / test double
 同一个 Controller
         ↓
 Esp32Board : Board
-        ├── pinMode(button_pin, INPUT_PULLUP)
-        ├── digitalRead(button_pin)
-        └── digitalWrite(led_pin, on ? HIGH : LOW)
+        ├── 配置 Button 输入与上拉
+        ├── 读取 GPIO 输入
+        └── 设置 LED 输出
 ```
 
-Arduino 适配器会是第一种硬件迁移；当需求需要更细的任务、驱动或组件依赖时，再增加 ESP-IDF 适配器。上层 `Controller` 不直接调用 `digitalRead`、`gpio_get_level` 等 API。具体 GPIO 编号、电平极性和板卡接线应由硬件实现和接线表决定。
+**此部分是规划，硬件适配器尚未实现或实机验收。** 工程主线采用 ESP-IDF，Arduino 在 H01 做对照与可选适配。上层 `Controller` 不直接调用 `digitalRead`、`gpio_get_level` 等 API。具体 GPIO 编号、电平极性和板卡接线应由硬件实现和接线表决定。保留 STEP 1 的可复用算法与状态设计，按真实外设替换 host fixture 和 Driver，不把所有 `Device` 模型字段直接当成硬件 HAL。
+
+硬件代码从 H00 起放在正常的固件工程中。Notebook 的代码格必须指向明确的工程文件；小实验可以明确导出，公共模块在 `.hpp` / `.cpp` 中编辑，避免两份源码不同步。构建、烧录和监视展示官方命令、实际工程与固件版本，串口会话在烧录前释放并在结束后恢复。
+
+H02 在新目录中通过官方模板独立建工程，H06 自行拆组件、配置依赖并调试，H14 在课程目录之外按自己的 README 构建、烧录和诊断。Notebook 后期承担说明与观测，最终项目的构建与运行无需课程 magic。完整单元与验收见 [STEP2_PLAN.md](STEP2_PLAN.md)。
 
 ## 自动验证和证据边界
 

@@ -422,7 +422,9 @@ ESP32 GPIO / Timer / Driver
 - [ESP32-DevKitC 官方指南](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html)
 - [经典 ESP32 数据手册](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf)
 
-Arduino 与 ESP-IDF 的选择会在硬件迁移阶段结合项目需求判断，不把“更专业”当作唯一标准。
+STEP 2 将独立开发作为必修线：**H02 自己新建工程 → H06 组件、配置和调试 → H14 在教程之外完成项目**。前期保留 Notebook 的操作与观察体验，后期用正常 `.cpp` / `.hpp` 工程和官方工具独立构建、烧录与调试。详细安排见 [STEP2_PLAN.md](STEP2_PLAN.md)。
+
+工程主线采用 ESP-IDF，Arduino 用作对照和可选路线；选择依据是项目需求与维护方式，不把“更专业”当作唯一标准。目前 STEP 2 仍为规划。
 
 ## 项目结构
 
