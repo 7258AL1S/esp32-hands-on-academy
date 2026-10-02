@@ -16,12 +16,14 @@
 
 第二阶段（STEP 2）再把同一套 Controller、状态机、协议和测试迁移到 GPIO、Timer、Interrupt、Wi-Fi、FreeRTOS、BLE 和 OTA。电脑模拟器不会冒充真实硬件验证：电气参数、无线射频、芯片时序、Flash 分区和真实 FreeRTOS 调度仍要在硬件上检查。
 
+**当前状态：STEP 1 的 25 个主课与 24 个答案 Notebook 已提供；STEP 2 为迁移规划，尚未完成真实硬件课程。** 本机 macOS 已完成 Notebook 和行为测试；Linux、WSL 与原生 Windows 尚未实机验收。
+
 ## 开始前：电脑要求
 
-### 最低要求
+### 环境要求
 
 - macOS、Windows 10/11 或 Linux；
-- 4 GB 以上可用内存，建议 8 GB；
+- 建议电脑有 8 GB 内存，实际占用取决于 VS Code、编译器和同时运行的实验；
 - 能联网安装 VS Code 扩展和 Python 依赖；
 - Python 3.10 或更新版本，以及 Git；
 - C++17 编译器和 CMake 3.16 或更新版本；
@@ -93,6 +95,8 @@ brew install cmake
 
 如果电脑没有 Homebrew，先按 <https://brew.sh/> 的说明安装，或者从 <https://cmake.org/download/> 安装 CMake。
 
+使用 CMake 图形安装包时，在菜单中选择 **Tools → How to Install For Command Line Use**，按其中说明把 `cmake` 加入 PATH，然后重新启动 VS Code。
+
 检查安装结果：
 
 ```sh
@@ -100,7 +104,39 @@ clang++ --version
 cmake --version
 ```
 
-### Windows
+### Windows：推荐使用 WSL 完整学习
+
+部分网络、线程、配置与 OTA 工具使用 `c++ -std=c++17` 等 GCC/Clang 命令，单独安装 MSVC 并不能运行全部课程。完整课程建议在 WSL 的 Ubuntu 环境中运行：VS Code 仍是 Windows 图形界面，编译器与 Notebook kernel 在 WSL 内运行。
+
+1. 在 **管理员 PowerShell** 中运行 `wsl --install -d Ubuntu`，按照提示重启；参见 [Microsoft WSL 安装指南](https://learn.microsoft.com/windows/wsl/install)。
+2. 打开 Ubuntu，首次启动时设置 Linux 用户名与密码。输入密码时终端不显示字符，这是正常行为。
+3. 在 Ubuntu 终端安装工具：
+
+   ```sh
+   sudo apt update
+   sudo apt install build-essential cmake python3 python3-venv python3-pip git
+   c++ --version
+   cmake --version
+   python3 --version
+   ```
+
+4. 在 Windows VS Code 安装 **WSL** 扩展（`ms-vscode-remote.remote-wsl`）。
+5. 在 Ubuntu 终端创建课程目录并克隆项目：
+
+   ```sh
+   mkdir -p ~/projects
+   cd ~/projects
+   git clone https://github.com/7258AL1S/esp32-hands-on-academy.git
+   cd esp32-hands-on-academy
+   code .
+   ```
+
+6. VS Code 左下角应显示 **WSL: Ubuntu**。在扩展面板中，将 **Python** 和 **Jupyter** 安装到 WSL（选择 **Install in WSL: Ubuntu**）。
+7. 后文的环境、Kernel 和验证步骤全部使用 **macOS / Linux** 命令。环境位置是 WSL 内的 `.venv/bin/python`，不是 Windows 的 `.venv\Scripts\python.exe`。
+
+不需要重复执行下一节的原生 Windows 安装步骤。
+
+### Windows：原生 MSVC 路线（部分实验）
 
 安装以下两项：
 
@@ -119,6 +155,8 @@ cmake --version
 ```powershell
 code .
 ```
+
+此路线适用于通过 CMake 编译的基础实验；后半部分调用 `c++` 的实验请切换到 WSL。原生 Windows 运行尚未实机验证。
 
 ### Ubuntu / Debian Linux
 
@@ -142,6 +180,8 @@ cd esp32-hands-on-academy
 
 如果你从 ZIP 下载项目，解压后进入包含 `README.md`、`notebooks/` 和 `tools/` 的目录。
 
+不熟悉 Git 时，在本仓库网页点击绿色 **Code → Download ZIP**，解压即可。后面的环境命令要在解压后的项目根目录运行。
+
 ### 在 VS Code 打开正确的目录
 
 在项目目录执行：
@@ -149,6 +189,8 @@ cd esp32-hands-on-academy
 ```sh
 code .
 ```
+
+若 macOS 提示 `code: command not found`，在 VS Code 按 `⇧⌘P`，搜索并执行 **Shell Command: Install 'code' command in PATH**；也可直接使用下方的 Open Folder 菜单。
 
 也可以在 VS Code 中选择 **File → Open Folder...**，打开 `esp32-hands-on-academy` 文件夹。
 
@@ -172,13 +214,15 @@ Python 只作为 Notebook 运行支架。建议使用项目自己的 `.venv`，�
 
 在 VS Code 的 **Terminal → New Terminal** 中运行：
 
+先确认终端当前目录包含 `requirements-notebook.txt`（运行 `ls` 查看）。Windows WSL 同样使用这一组命令。
+
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -r requirements-notebook.txt
 ```
 
-### Windows PowerShell
+### 原生 Windows PowerShell（基础实验）
 
 ```powershell
 py -m venv .venv
@@ -195,7 +239,8 @@ py -m venv .venv
 3. 选择 **Python Environments**；
 4. 选择项目中的 `.venv`：
    - macOS/Linux：`.venv/bin/python`
-   - Windows：`.venv\Scripts\python.exe`
+   - 原生 Windows：`.venv\Scripts\python.exe`
+   - Windows WSL：Ubuntu 内的 `.venv/bin/python`
 
 如果列表没有 `.venv`，选择 **Select Another Kernel... → Python Environments...**，或者运行命令面板中的 **Python: Select Interpreter**，先选择 `.venv`。
 
@@ -217,8 +262,8 @@ py -m venv .venv
 运行 Notebook 的快捷键：
 
 - `Shift+Enter`：运行当前格并进入下一格；
-- `Ctrl+Enter`（macOS 为 `⌘Enter`）：运行当前格并停留；
-- `Esc` 后按 `0`、`0`：重启 kernel；
+- 格左侧 **▶**：运行当前格；
+- Notebook 顶部 **Restart / 重启**：重启 kernel；
 - 重启 kernel 后，必须重新运行初始化格。
 
 ### 面板中的控件代表什么
@@ -290,7 +335,7 @@ macOS/Linux：
 .venv/bin/python tools/verify_panels.py
 ```
 
-Windows PowerShell：
+原生 Windows PowerShell（基础实验；全量验证请使用 WSL）：
 
 ```powershell
 .venv\Scripts\python tools\run_notebook_smoke.py

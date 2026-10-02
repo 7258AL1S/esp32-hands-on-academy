@@ -1,5 +1,6 @@
 .build/
 .venv/
+.academy-data/
 .ipynb_checkpoints/
 build/
 __pycache__/
