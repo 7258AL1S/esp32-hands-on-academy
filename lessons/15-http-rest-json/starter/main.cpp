@@ -8,6 +8,7 @@ int main() {
         // TODO: POST /api/reminder 接受 {"enabled":true/false} 并保存状态。
         (void)request;
         (void)reminder_on;
-        return HttpResponse{404, "application/json; charset=utf-8", "{\"error\":\"TODO\"}"};
+        return HttpResponse{404, "application/json; charset=utf-8",
+                            "{\"error\":\"TODO\"}"};
     });
 }

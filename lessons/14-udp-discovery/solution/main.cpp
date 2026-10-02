@@ -2,7 +2,8 @@
 
 int main() {
     return academy::net::run_udp_server([](std::string_view packet) {
-        if (packet == "DISCOVER") return std::string("DESK_REMINDER|ONLINE");
+        if (packet == "DISCOVER")
+            return std::string("DESK_REMINDER|ONLINE");
         return std::string("ERR");
     });
 }

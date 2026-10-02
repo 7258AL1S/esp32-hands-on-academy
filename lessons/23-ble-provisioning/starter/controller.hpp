@@ -1,12 +1,14 @@
 #pragma once
 #include "academy/device.hpp"
 namespace academy {
-class Controller {
-public:
-    explicit Controller(Device& device) : device_(device) {}
-    void tick();
-private:
-    Device& device_;
-    bool provisioned_ = false;
-};
+    class Controller {
+    public:
+        explicit Controller(Device& device) : device_(device) {
+        }
+        void tick();
+
+    private:
+        Device& device_;
+        bool provisioned_ = false;
+    };
 }

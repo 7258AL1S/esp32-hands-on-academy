@@ -1,2 +1,27 @@
 #include "controller.hpp"
-namespace academy { Controller::Controller(Device& board) : board_(board) {} void Controller::tick() { const bool pressed = board_.read_button() == Level::low; if (!initialized_) { initialized_ = true; raw_ = stable_ = pressed; changed_at_ = board_.input.now_ms; board_.output.state = "baseline"; return; } if (pressed != raw_) { raw_ = pressed; changed_at_ = board_.input.now_ms; } if (raw_ != stable_ && board_.input.now_ms - changed_at_ >= 30) { stable_ = raw_; if (stable_) { ++board_.output.events; board_.output.led = !board_.output.led; } } board_.output.state = stable_ ? "stable pressed" : "stable released"; } }
+namespace academy {
+    Controller::Controller(Device& board) : board_(board) {
+    }
+    void Controller::tick() {
+        const bool pressed = board_.read_button() == Level::low;
+        if (!initialized_) {
+            initialized_ = true;
+            raw_ = stable_ = pressed;
+            changed_at_ = board_.input.now_ms;
+            board_.output.state = "baseline";
+            return;
+        }
+        if (pressed != raw_) {
+            raw_ = pressed;
+            changed_at_ = board_.input.now_ms;
+        }
+        if (raw_ != stable_ && board_.input.now_ms - changed_at_ >= 30) {
+            stable_ = raw_;
+            if (stable_) {
+                ++board_.output.events;
+                board_.output.led = !board_.output.led;
+            }
+        }
+        board_.output.state = stable_ ? "stable pressed" : "stable released";
+    }
+}

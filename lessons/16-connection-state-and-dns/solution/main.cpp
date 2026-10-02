@@ -8,7 +8,8 @@ int main() {
         return 0;
     }
     const auto address = academy::net::resolve_ipv4("localhost");
-    const auto reply = academy::net::request_line("localhost", academy::net::env_port("ACADEMY_PORT"), "PING\n");
+    const auto reply = academy::net::request_line(
+        "localhost", academy::net::env_port("ACADEMY_PORT"), "PING\n");
     std::cout << "RESOLVED " << address << ' ' << reply;
     return reply == "PONG\n" ? 0 : 1;
 }

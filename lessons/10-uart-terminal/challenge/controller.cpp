@@ -1,2 +1,11 @@
 #include "controller.hpp"
-namespace academy {Controller::Controller(Device&b):board_(b){}void Controller::tick(){if(board_.input.text=="PING\n")board_.output.outgoing+="PONG\n";else if(!board_.input.text.empty())board_.output.outgoing+="ERR\n";}}
+namespace academy {
+    Controller::Controller(Device& b) : board_(b) {
+    }
+    void Controller::tick() {
+        if (board_.input.text == "PING\n")
+            board_.output.outgoing += "PONG\n";
+        else if (!board_.input.text.empty())
+            board_.output.outgoing += "ERR\n";
+    }
+}

@@ -6,15 +6,22 @@ int main() {
         using academy::net::HttpResponse;
         if (request.method == "GET" && request.path == "/api/status") {
             return HttpResponse{200, "application/json; charset=utf-8",
-                                std::string("{\"reminder\":") + (reminder_on ? "true}" : "false}")};
+                                std::string("{\"reminder\":") +
+                                    (reminder_on ? "true}" : "false}")};
         }
         if (request.method == "POST" && request.path == "/api/reminder") {
-            if (request.body == "{\"enabled\":true}") reminder_on = true;
-            else if (request.body == "{\"enabled\":false}") reminder_on = false;
-            else return HttpResponse{400, "application/json; charset=utf-8", "{\"error\":\"enabled expected\"}"};
+            if (request.body == "{\"enabled\":true}")
+                reminder_on = true;
+            else if (request.body == "{\"enabled\":false}")
+                reminder_on = false;
+            else
+                return HttpResponse{400, "application/json; charset=utf-8",
+                                    "{\"error\":\"enabled expected\"}"};
             return HttpResponse{200, "application/json; charset=utf-8",
-                                std::string("{\"reminder\":") + (reminder_on ? "true}" : "false}")};
+                                std::string("{\"reminder\":") +
+                                    (reminder_on ? "true}" : "false}")};
         }
-        return HttpResponse{404, "application/json; charset=utf-8", "{\"error\":\"not found\"}"};
+        return HttpResponse{404, "application/json; charset=utf-8",
+                            "{\"error\":\"not found\"}"};
     });
 }

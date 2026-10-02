@@ -2,5 +2,55 @@
 #include "academy/test.hpp"
 #include "controller.hpp"
 #include <string>
-using namespace academy; static void tick(Device& d,Controller& c,unsigned n,bool b){d.input.now_ms=n;d.input.button=b;c.tick();}
-int main(int argc,char**argv){std::string p=argc==2?argv[1]:"exercise";TestSuite t;if(p=="guided"){t.run("press toggles timer",[]{Device d;Controller c(d);tick(d,c,0,false);tick(d,c,10,true);require(d.output.led&&d.output.state=="running","press should start");});return t.result();}t.run("timer counts down without blocking",[]{Device d;Controller c(d);tick(d,c,0,false);tick(d,c,10,true);tick(d,c,20,false);tick(d,c,1010,false);near(d.output.reading,2000,1,"remaining time");require(d.output.led,"timer should still run");tick(d,c,3010,false);require(!d.output.led&&d.output.state=="done","deadline should finish timer");});t.run("new press cancels immediately",[]{Device d;Controller c(d);tick(d,c,0,false);tick(d,c,10,true);tick(d,c,20,false);tick(d,c,40,true);require(!d.output.led&&d.output.state=="cancelled","second press should cancel without waiting");});t.run("boot held is no start",[]{Device d;d.input.button=true;Controller c(d);tick(d,c,0,true);tick(d,c,50,true);require(!d.output.led,"boot held must be baseline");});return t.result();}
+using namespace academy;
+static void tick(Device& d, Controller& c, unsigned n, bool b) {
+    d.input.now_ms = n;
+    d.input.button = b;
+    c.tick();
+}
+int main(int argc, char** argv) {
+    std::string p = argc == 2 ? argv[1] : "exercise";
+    TestSuite t;
+    if (p == "guided") {
+        t.run("press toggles timer", [] {
+            Device d;
+            Controller c(d);
+            tick(d, c, 0, false);
+            tick(d, c, 10, true);
+            require(d.output.led && d.output.state == "running", "press should start");
+        });
+        return t.result();
+    }
+    t.run("timer counts down without blocking", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, false);
+        tick(d, c, 10, true);
+        tick(d, c, 20, false);
+        tick(d, c, 1010, false);
+        near(d.output.reading, 2000, 1, "remaining time");
+        require(d.output.led, "timer should still run");
+        tick(d, c, 3010, false);
+        require(!d.output.led && d.output.state == "done",
+                "deadline should finish timer");
+    });
+    t.run("new press cancels immediately", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, false);
+        tick(d, c, 10, true);
+        tick(d, c, 20, false);
+        tick(d, c, 40, true);
+        require(!d.output.led && d.output.state == "cancelled",
+                "second press should cancel without waiting");
+    });
+    t.run("boot held is no start", [] {
+        Device d;
+        d.input.button = true;
+        Controller c(d);
+        tick(d, c, 0, true);
+        tick(d, c, 50, true);
+        require(!d.output.led, "boot held must be baseline");
+    });
+    return t.result();
+}

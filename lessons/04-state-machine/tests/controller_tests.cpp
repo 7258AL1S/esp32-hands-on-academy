@@ -2,5 +2,52 @@
 #include "academy/test.hpp"
 #include "controller.hpp"
 #include <string>
-using namespace academy;static void tick(Device&d,Controller&c,unsigned now,const char*cmd){d.input.now_ms=now;d.input.text=cmd;c.tick();}
-int main(int argc,char**argv){std::string p=argc==2?argv[1]:"exercise";TestSuite t;if(p=="guided"){t.run("start enters running",[]{Device d;Controller c(d);tick(d,c,0,"start");require(d.output.state=="running"&&d.output.led,"start state");});return t.result();}t.run("pause preserves remaining time",[]{Device d;Controller c(d);tick(d,c,0,"start");tick(d,c,400,"");tick(d,c,400,"pause");require(d.output.state=="paused","must pause");near(d.output.reading,600,1,"remaining");tick(d,c,1000,"resume");tick(d,c,1500,"");require(d.output.state=="running","paused time must not elapse");tick(d,c,1600,"");require(d.output.state=="done","resume reaches deadline");});t.run("reset wins from any active state",[]{Device d;Controller c(d);tick(d,c,0,"start");tick(d,c,10,"reset");require(d.output.state=="idle"&&!d.output.led,"reset state");});t.run("duplicate command is not repeated",[]{Device d;Controller c(d);tick(d,c,0,"start");int e=d.output.events;tick(d,c,1,"start");require(d.output.events==e,"persistent input command only once");});return t.result();}
+using namespace academy;
+static void tick(Device& d, Controller& c, unsigned now, const char* cmd) {
+    d.input.now_ms = now;
+    d.input.text = cmd;
+    c.tick();
+}
+int main(int argc, char** argv) {
+    std::string p = argc == 2 ? argv[1] : "exercise";
+    TestSuite t;
+    if (p == "guided") {
+        t.run("start enters running", [] {
+            Device d;
+            Controller c(d);
+            tick(d, c, 0, "start");
+            require(d.output.state == "running" && d.output.led, "start state");
+        });
+        return t.result();
+    }
+    t.run("pause preserves remaining time", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, "start");
+        tick(d, c, 400, "");
+        tick(d, c, 400, "pause");
+        require(d.output.state == "paused", "must pause");
+        near(d.output.reading, 600, 1, "remaining");
+        tick(d, c, 1000, "resume");
+        tick(d, c, 1500, "");
+        require(d.output.state == "running", "paused time must not elapse");
+        tick(d, c, 1600, "");
+        require(d.output.state == "done", "resume reaches deadline");
+    });
+    t.run("reset wins from any active state", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, "start");
+        tick(d, c, 10, "reset");
+        require(d.output.state == "idle" && !d.output.led, "reset state");
+    });
+    t.run("duplicate command is not repeated", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, "start");
+        int e = d.output.events;
+        tick(d, c, 1, "start");
+        require(d.output.events == e, "persistent input command only once");
+    });
+    return t.result();
+}

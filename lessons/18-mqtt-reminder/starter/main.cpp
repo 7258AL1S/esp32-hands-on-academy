@@ -3,7 +3,8 @@
 
 int main() {
     try {
-        auto client = academy::net::MqttClient::connect("127.0.0.1", academy::net::env_port("ACADEMY_MQTT_PORT"), "desk-reminder");
+        auto client = academy::net::MqttClient::connect(
+            "127.0.0.1", academy::net::env_port("ACADEMY_MQTT_PORT"), "desk-reminder");
         // TODO: publish state=offline；subscribe desk/reminder/cmd；收到 toggle 后 publish state=on。
         (void)client;
         std::cout << "TODO\n";

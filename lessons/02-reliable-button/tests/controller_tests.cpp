@@ -2,6 +2,67 @@
 #include "academy/test.hpp"
 #include "controller.hpp"
 #include <string>
-using academy::Controller; using academy::Device; using academy::TestSuite; using academy::require;
-static void tick(Device& d, Controller& c, unsigned time, bool button) { d.input.now_ms=time; d.input.button=button; c.tick(); }
-int main(int argc, char** argv) { const std::string p=argc==2?argv[1]:"exercise"; TestSuite t; if (p=="guided") { t.run("raw press creates one visible event", [] { Device d; Controller c(d); tick(d,c,0,false); tick(d,c,10,true); require(d.output.events==1 && d.output.led,"new raw press should toggle"); }); return t.result(); } t.run("bounce does not become multiple presses", [] { Device d; Controller c(d); tick(d,c,0,false); tick(d,c,5,true); tick(d,c,10,false); tick(d,c,15,true); tick(d,c,44,true); require(d.output.events==0,"input is not stable for 30 ms"); tick(d,c,45,true); require(d.output.events==1 && d.output.led,"one stable press should toggle once"); }); t.run("release and next stable press creates second event", [] { Device d; Controller c(d); tick(d,c,0,false); tick(d,c,1,true); tick(d,c,31,true); tick(d,c,40,false); tick(d,c,70,false); tick(d,c,80,true); tick(d,c,110,true); require(d.output.events==2 && !d.output.led,"second stable press should toggle off"); }); t.run("boot held is a baseline", [] { Device d; d.input.button=true; Controller c(d); tick(d,c,0,true); tick(d,c,50,true); require(d.output.events==0,"boot-held button is not a press event"); tick(d,c,60,false); tick(d,c,90,false); tick(d,c,100,true); tick(d,c,130,true); require(d.output.events==1,"release then press should count"); }); return t.result(); }
+using academy::Controller;
+using academy::Device;
+using academy::TestSuite;
+using academy::require;
+static void tick(Device& d, Controller& c, unsigned time, bool button) {
+    d.input.now_ms = time;
+    d.input.button = button;
+    c.tick();
+}
+int main(int argc, char** argv) {
+    const std::string p = argc == 2 ? argv[1] : "exercise";
+    TestSuite t;
+    if (p == "guided") {
+        t.run("raw press creates one visible event", [] {
+            Device d;
+            Controller c(d);
+            tick(d, c, 0, false);
+            tick(d, c, 10, true);
+            require(d.output.events == 1 && d.output.led,
+                    "new raw press should toggle");
+        });
+        return t.result();
+    }
+    t.run("bounce does not become multiple presses", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, false);
+        tick(d, c, 5, true);
+        tick(d, c, 10, false);
+        tick(d, c, 15, true);
+        tick(d, c, 44, true);
+        require(d.output.events == 0, "input is not stable for 30 ms");
+        tick(d, c, 45, true);
+        require(d.output.events == 1 && d.output.led,
+                "one stable press should toggle once");
+    });
+    t.run("release and next stable press creates second event", [] {
+        Device d;
+        Controller c(d);
+        tick(d, c, 0, false);
+        tick(d, c, 1, true);
+        tick(d, c, 31, true);
+        tick(d, c, 40, false);
+        tick(d, c, 70, false);
+        tick(d, c, 80, true);
+        tick(d, c, 110, true);
+        require(d.output.events == 2 && !d.output.led,
+                "second stable press should toggle off");
+    });
+    t.run("boot held is a baseline", [] {
+        Device d;
+        d.input.button = true;
+        Controller c(d);
+        tick(d, c, 0, true);
+        tick(d, c, 50, true);
+        require(d.output.events == 0, "boot-held button is not a press event");
+        tick(d, c, 60, false);
+        tick(d, c, 90, false);
+        tick(d, c, 100, true);
+        tick(d, c, 130, true);
+        require(d.output.events == 1, "release then press should count");
+    });
+    return t.result();
+}
